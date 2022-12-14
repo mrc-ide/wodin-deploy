@@ -23,7 +23,9 @@ classifiers = [
   "Programming Language :: Python :: Implementation :: CPython",
   "Programming Language :: Python :: Implementation :: PyPy",
 ]
-dependencies = []
+dependencies = [
+  "constellation"
+]
 dynamic = ["version"]
 
 [project.urls]
@@ -42,6 +44,7 @@ dependencies = [
 [tool.hatch.envs.default.scripts]
 cov = "pytest --cov-report=term-missing --cov-config=pyproject.toml --cov=wodin_deploy --cov=tests {args}"
 no-cov = "cov --no-cov {args}"
+test = "pytest {args}"
 
 [[tool.hatch.envs.test.matrix]]
 python = ["37", "38", "39", "310", "311"]
@@ -51,6 +54,7 @@ branch = true
 parallel = true
 omit = [
   "wodin_deploy/__about__.py",
+  "tests/*"
 ]
 
 [tool.coverage.report]

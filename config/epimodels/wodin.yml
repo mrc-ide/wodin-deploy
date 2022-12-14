@@ -1,0 +1,18 @@
+wodin:
+  msc-idm-2022:
+    github: mrc-ide/wodin-msc-idm-2022
+  malawi-idm-2022:
+    github: mrc-ide/wodin-malawi-idm-2022
+  demo:
+    github: mrc-ide/wodin-demo
+
+proxy:
+  hostname: epimodels.dide.ic.ac.uk
+  ssl:
+    certificate: VAULT:secret/wodin/ssl/epimodels:cert
+    key: VAULT:secret/wodin/ssl/epimodels:key
+
+vault:
+  addr: https://vault.dide.ic.ac.uk:8200
+  auth:
+    method: github
