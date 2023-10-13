@@ -1,7 +1,8 @@
-from wodin_deploy.config import WodinConfig
-from wodin_deploy.wodin_constellation import WodinConstellation
 import docker
 from constellation import docker_util
+
+from wodin_deploy.config import WodinConfig
+from wodin_deploy.wodin_constellation import WodinConstellation
 
 
 def get_site_container_name(site, cfg):
