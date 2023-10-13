@@ -27,7 +27,7 @@ classifiers = [
 
 dependencies = [
 #  "constellation>=1.2.3",
-  "constellation@git+https://github.com/reside-ic/constellation#egg=add-preconfigure",
+  "constellation@git+https://github.com/reside-ic/constellation@add-preconfigure",
   "docker"
 ]
 
