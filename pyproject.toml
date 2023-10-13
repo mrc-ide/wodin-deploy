@@ -33,7 +33,7 @@ dependencies = [
 ]
 
 dynamic = ["version"]
-[tool.setuptools.dynamic]
+[project.dynamic]
 version = {attr = "wodin_deploy.__version__"}
 
 [project.urls]
