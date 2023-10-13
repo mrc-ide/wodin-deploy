@@ -143,14 +143,6 @@ ban-relative-imports = "all"
 # Tests can use magic values, assertions, and relative imports
 "tests/**/*" = ["PLR2004", "S101", "TID252"]
 
-[tool.coverage.run]
-source = ["src"]
-branch = true
-parallel = true
-omit = [
-  "wodin_deploy/__about__.py",
-]
-
 [tool.coverage.paths]
 wodin_deploy = ["wodin_deploy"]
 tests = ["tests"]
