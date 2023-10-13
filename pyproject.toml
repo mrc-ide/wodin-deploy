@@ -42,6 +42,7 @@ path = "wodin_deploy/__about__.py"
 dependencies = [
   "pytest",
   "pytest-cov",
+  "coverage[toml]>=6.5",
 ]
 [tool.hatch.envs.default.scripts]
 cov = "pytest --cov-report=term-missing --cov-config=pyproject.toml --cov=wodin_deploy --cov=tests {args}"
