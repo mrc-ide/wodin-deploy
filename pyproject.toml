@@ -34,9 +34,6 @@ dependencies = [
 
 dynamic = ["version"]
 
-[tool.hatch.version]
-path = "wodin_deploy/__about__.py"
-
 [project.urls]
 Documentation = "https://github.com/mrc-ide/wodin-deploy#readme"
 Issues = "https://github.com/mrc-ide/wodin-deploy/issues"
