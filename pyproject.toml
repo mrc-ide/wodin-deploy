@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "wodin-deploy"
-description = ''
+description = 'Deploy tool for wodin instances'
 readme = "README.md"
 requires-python = ">=3.7"
 license = "MIT"
@@ -23,7 +23,11 @@ classifiers = [
   "Programming Language :: Python :: Implementation :: CPython",
   "Programming Language :: Python :: Implementation :: PyPy",
 ]
-dependencies = []
+dependencies = [
+#  "constellation>=1.2.3",
+  "constellation@git+https://github.com/reside-ic/constellation#egg=add-preconfigure"
+]
+
 dynamic = ["version"]
 
 [project.urls]

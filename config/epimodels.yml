@@ -1,0 +1,71 @@
+# Prefix for container names; we'll use {container_prefix}-(container_name)
+container_prefix: epimodels
+
+# Docker org for images
+repo: mrcide
+
+network: wodin-nw
+
+## Domain where the sites will be deployed. E.g. epimodels.dide.ic.ac.uk
+#hostname: localhost
+
+# Configuration for wodin sites
+# url: url of the github repo containing the configuration
+# ref: branch of the repo defined in the url you want to pull
+# urlPath: if set to "demoUrlPath" for example app will be on epimodels.dide.ic.ac.uk/demoUrlPath
+# description: the description that shows up on the index page at epimodels.dide.ic.ac.uk
+
+sites:
+  demo:
+    url: https://github.com/mrc-ide/wodin-demo-config
+    ref: main
+    urlPath: demo
+    description: A demo of core app types and configuration
+  msc-idm-2022:
+    url: https://github.com/mrc-ide/wodin-msc-idm-2022
+    ref: main
+    urlPath: msc-2022
+    description: The 2022 MSc course
+  msc-idm-2023:
+    url: https://github.com/mrc-ide/wodin-msc-idm-2023
+    ref: main
+    urlPath: msc-2023
+    description: The 2023 MSc course
+  malawi-idm-2022:
+    url: https://github.com/mrc-ide/wodin-malawi-idm-2022
+    ref: main
+    urlPath: malawi-2022
+    description: Infectious Disease Modelling with a focus on Malaria, run in Malawi
+  gambia-idm-2023:
+    url: https://github.com/mrc-ide/wodin-gambia-idm-2023
+    ref: main
+    urlPath: gambia-2023
+    description: Infectious Disease Modelling with a focus on Malaria, run in The Gambia
+  acomvec-2023:
+    url: https://github.com/mrc-ide/wodin-acomvec-2023
+    ref: main
+    urlPath: cameroon-2023
+    description: Infectious Disease Modelling with a focus on Malaria, run in Cameroon
+  infectiousdiseasemodels-2023:
+    url: https://github.com/mrc-ide/wodin-shortcourse-2023
+    ref: main
+    urlPath: shortcourse
+    description: Introduction to Mathematical Models of the Epidemiology & Control of Infectious Diseases (the DIDE short course), 2023
+
+odin.api:
+  ref: main
+
+wodin-proxy:
+  ref: latest
+  port_http: 80
+  port_https: 443
+  ssl:
+    certificate: VAULT:secret/wodin/ssl/epimodels:cert
+    key: VAULT:secret/wodin/ssl/epimodels:key
+
+wodin:
+  ref: main
+
+redis:
+  repo: library
+  ref: "6"
