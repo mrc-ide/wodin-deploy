@@ -33,6 +33,8 @@ dependencies = [
 ]
 
 dynamic = ["version"]
+[tool.setuptools.dynamic]
+version = {attr = "wodin_deploy.__version__"}
 
 [project.urls]
 Documentation = "https://github.com/mrc-ide/wodin-deploy#readme"
