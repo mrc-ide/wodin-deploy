@@ -22,16 +22,12 @@ class WodinConfig:
 
         # wodin-proxy
         self.wodin_proxy = self.get_base_config("wodin-proxy")
-        self.wodin_proxy["port_http"] = config.config_integer(
-            dat, ["wodin-proxy", "port_http"])
-        self.wodin_proxy["port_https"] = config.config_integer(
-            dat, ["wodin-proxy", "port_https"])
+        self.wodin_proxy["port_http"] = config.config_integer(dat, ["wodin-proxy", "port_http"])
+        self.wodin_proxy["port_https"] = config.config_integer(dat, ["wodin-proxy", "port_https"])
         self.proxy_ssl_self_signed = "ssl" not in dat["wodin-proxy"]
         if not self.proxy_ssl_self_signed:
-            self.wodin_proxy["ssl_certificate"] = config.config_string(
-                dat, ["wodin-proxy", "ssl", "certificate"])
-            self.wodin_proxy["ssl_key"] = config.config_string(
-                dat, ["wodin-proxy", "ssl", "key"])
+            self.wodin_proxy["ssl_certificate"] = config.config_string(dat, ["wodin-proxy", "ssl", "certificate"])
+            self.wodin_proxy["ssl_key"] = config.config_string(dat, ["wodin-proxy", "ssl", "key"])
 
         # wodin
         self.wodin = self.get_base_config("wodin")
@@ -54,7 +50,4 @@ class WodinConfig:
             return section
 
     def get_base_config(self, section):
-        return {
-            "ref": self.build_ref(section),
-            "name": self.get_name(section)
-        }
+        return {"ref": self.build_ref(section), "name": self.get_name(section)}

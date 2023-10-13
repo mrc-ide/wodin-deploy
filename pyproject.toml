@@ -23,6 +23,10 @@ classifiers = [
   "Programming Language :: Python :: Implementation :: CPython",
   "Programming Language :: Python :: Implementation :: PyPy",
 ]
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
 dependencies = [
 #  "constellation>=1.2.3",
   "constellation@git+https://github.com/reside-ic/constellation#egg=add-preconfigure"
@@ -43,6 +47,8 @@ dependencies = [
   "pytest",
   "pytest-cov",
   "coverage[toml]>=6.5",
+  "constellation@git+https://github.com/reside-ic/constellation@add-preconfigure",
+  "docker"
 ]
 [tool.hatch.envs.default.scripts]
 cov = "pytest --cov-report=term-missing --cov-config=pyproject.toml --cov=wodin_deploy --cov=tests {args}"

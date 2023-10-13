@@ -11,13 +11,13 @@ def test_config_basic():
             "url": "https://github.com/mrc-ide/wodin-demo-config",
             "ref": "main",
             "urlPath": "demo",
-            "description": "test desc for demo"
+            "description": "test desc for demo",
         },
         "shortcourse": {
             "url": "https://github.com/mrc-ide/wodin-shortcourse-2023",
             "ref": "main",
             "urlPath": "shortcourse",
-            "description": "test desc for shortcourse"
+            "description": "test desc for shortcourse",
         },
     }
     assert cfg.redis["name"] == "redis"

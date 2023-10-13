@@ -16,10 +16,12 @@ class WodinConstellation:
         containers = [redis, odin_api, *sites, proxy]
 
         self.obj = Constellation(
-            "wodin", cfg.container_prefix,
-            containers, cfg.network,
+            "wodin",
+            cfg.container_prefix,
+            containers,
+            cfg.network,
             {"redis-data": "redis-data", "wodin-config": "wodin-config"},
-            data=cfg
+            data=cfg,
         )
 
     def start(self, **kwargs):
@@ -48,10 +50,9 @@ def odin_api_container(cfg):
 
 
 def get_preconfigure(site, container_name, container_prefix):
-    return lambda *_: cmd([
-        "docker", "cp", "./siteConfigs/" + site,
-        container_prefix + "-" + container_name + ":/wodin/config/" + site
-    ])
+    return lambda *_: cmd(
+        ["docker", "cp", "./siteConfigs/" + site, container_prefix + "-" + container_name + ":/wodin/config/" + site]
+    )
 
 
 def configure_wodin(_, cfg):
@@ -68,15 +69,19 @@ def get_wodin_container(cfg, site, path):
     container_prefix = cfg.container_prefix
     wodin_mounts = [ConstellationMount("wodin-config", "/wodin/config")]
     container_name = wodin["name"] + "-" + site
-    return ConstellationContainer(container_name, wodin["ref"], mounts=wodin_mounts,
-                                  args=[
-                                      "--redis-url=redis://epimodels-redis:6379",
-                                      "--odin-api=http://epimodels-api:8001",
-                                      "--base-url=http://localhost/" + path,
-                                      "/wodin/config/" + site
-                                  ],
-                                  configure=configure_wodin,
-                                  preconfigure=get_preconfigure(site, container_name, container_prefix))
+    return ConstellationContainer(
+        container_name,
+        wodin["ref"],
+        mounts=wodin_mounts,
+        args=[
+            "--redis-url=redis://epimodels-redis:6379",
+            "--odin-api=http://epimodels-api:8001",
+            "--base-url=http://localhost/" + path,
+            "/wodin/config/" + site,
+        ],
+        configure=configure_wodin,
+        preconfigure=get_preconfigure(site, container_name, container_prefix),
+    )
 
 
 def sites_containers(cfg):
@@ -97,12 +102,15 @@ def create_index_page(sites):
         "<html>\n<head>\n<title>Wodin</title>\n</head>\n<body>\n",
         "<h1>Wodin</h1>\n",
         f"<p>There are {len(sites)} deployed configurations:</p>\n",
-        "<ul>\n"
+        "<ul>\n",
     ]
     for site in sites.keys():
         site_obj = sites[site]
-        html_strings.append("<li><a href='/{}'><code>{}</code></a>: {}</li>\n"
-                            .format(site_obj["urlPath"], site, site_obj["description"]))
+        html_strings.append(
+            "<li><a href='/{}'><code>{}</code></a>: {}</li>\n".format(
+                site_obj["urlPath"], site, site_obj["description"]
+            )
+        )
     html_strings.append("</ul>\n</body>\n</html>")
     return html_strings
 
@@ -132,10 +140,5 @@ def wodin_proxy_container(cfg):
     args = ["localhost", *site_args]
     ports = [wodin_proxy["port_http"], wodin_proxy["port_https"]]
     return ConstellationContainer(
-        wodin_proxy["name"],
-        wodin_proxy["ref"],
-        ports=ports,
-        args=args,
-        configure=proxy_configure,
-        network=cfg.network
+        wodin_proxy["name"], wodin_proxy["ref"], ports=ports, args=args, configure=proxy_configure, network=cfg.network
     )
