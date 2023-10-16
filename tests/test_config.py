@@ -21,7 +21,7 @@ def test_config_basic():
         },
     }
     assert cfg.redis["name"] == "redis"
-    assert str(cfg.redis["ref"]) == "library/redis:6"
+    assert str(cfg.redis["ref"]) == "library/redis:6.0"
     assert cfg.odin_api["name"] == "odin.api"
     assert str(cfg.odin_api["ref"]) == "test-repo/odin.api:main"
     assert cfg.wodin["name"] == "wodin"

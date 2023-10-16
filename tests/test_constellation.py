@@ -10,12 +10,12 @@ def get_site_container_name(site, cfg):
 
 
 def test_start_and_stop():
+    cl = docker.client.from_env()
+    cl.images.pull("library/redis:6.0")
+
     cfg = WodinConfig("config/epimodels")
     obj = WodinConstellation(cfg)
     obj.start()
-
-    cl = docker.client.from_env()
-    cl.images.pull("library/redis:6.0")
 
     assert docker_util.network_exists(cfg.network)
     assert docker_util.volume_exists("redis-data")
