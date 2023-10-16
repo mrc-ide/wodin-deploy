@@ -60,8 +60,9 @@ def configure_wodin(_, cfg):
         cl = docker.client.from_env()
         redis = cl.containers.get(f"{cfg.container_prefix}-{cfg.redis['name']}")
         if "Ready to accept connections" in redis.logs().decode("utf-8"):
-            break
+            return
         time.sleep(1)
+    raise Exception("Wodin could not connect to Redis")
 
 
 def get_wodin_container(cfg, site, path):
