@@ -43,4 +43,4 @@ wodin:
 
 redis:
   repo: library
-  ref: "6"
+  ref: "6.0"
