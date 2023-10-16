@@ -4,3 +4,4 @@ __pycache__
 siteConfigs
 proxyIndexPage
 .coverage
+.ruff_cache

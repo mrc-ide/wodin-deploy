@@ -143,7 +143,6 @@ ban-relative-imports = "all"
 "tests/**/*" = ["PLR2004", "S101", "TID252"]
 
 [tool.coverage.run]
-src = ["."]
 branch = true
 parallel = true
 omit = [
