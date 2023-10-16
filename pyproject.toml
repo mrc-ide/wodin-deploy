@@ -51,8 +51,24 @@ dependencies = [
   "docker"
 ]
 [tool.hatch.envs.default.scripts]
-cov = "pytest --cov-report=term-missing --cov-config=pyproject.toml --cov=wodin_deploy --cov=tests {args}"
-no-cov = "cov --no-cov {args}"
+test = "pytest {args:tests}"
+test-cov = "coverage run -m pytest {args:tests}"
+cov-report = [
+  "- coverage combine",
+  "coverage report",
+]
+cov-report-xml = [
+    "- coverage combine",
+    "coverage xml",
+]
+cov = [
+  "test-cov",
+  "cov-report",
+]
+cov-ci = [
+    "test-cov",
+    "cov-report-xml",
+]
 
 [[tool.hatch.envs.test.matrix]]
 python = ["37", "38", "39", "310", "311"]

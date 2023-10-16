@@ -5,3 +5,4 @@ siteConfigs
 proxyIndexPage
 .coverage
 .ruff_cache
+.coverage.*
