@@ -1,10 +1,12 @@
 import io
+from contextlib import redirect_stdout
+
 import docker
 from constellation import docker_util
-from contextlib import redirect_stdout
 
 from wodin_deploy.config import WodinConfig
 from wodin_deploy.wodin_constellation import WodinConstellation
+
 
 def get_site_container_name(site, cfg):
     return f"{cfg.container_prefix}-{cfg.wodin['name']}-{site}"
