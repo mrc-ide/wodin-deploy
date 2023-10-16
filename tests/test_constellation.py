@@ -15,6 +15,7 @@ def test_start_and_stop():
     obj.start()
 
     cl = docker.client.from_env()
+    cl.images.pull("library/redis:6")
 
     assert docker_util.network_exists(cfg.network)
     assert docker_util.volume_exists("redis-data")
