@@ -12,6 +12,9 @@ def get_site_container_name(site, cfg):
 def test_start_and_stop():
     cl = docker.client.from_env()
     cl.images.pull("library/redis:6.0")
+    cl.images.pull("mrcide/odin.api:main")
+    cl.images.pull("mrcide/wodin-proxy:latest")
+    cl.images.pull("mrcide/wodin:main")
 
     cfg = WodinConfig("config/epimodels")
     obj = WodinConstellation(cfg)
