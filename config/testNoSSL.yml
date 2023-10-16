@@ -34,9 +34,6 @@ wodin-proxy:
   ref: latest
   port_http: 80
   port_https: 443
-  ssl:
-    certificate: test-cert
-    key: test-key
 
 wodin:
   name: wodin
