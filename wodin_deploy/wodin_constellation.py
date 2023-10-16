@@ -62,7 +62,8 @@ def configure_wodin(_, cfg):
         if "Ready to accept connections" in redis.logs().decode("utf-8"):
             return
         time.sleep(1)
-    raise Exception("Wodin could not connect to Redis")
+    msg = "Wodin could not connect to Redis"
+    raise Exception(msg)
 
 
 def get_wodin_container(cfg, site, path):

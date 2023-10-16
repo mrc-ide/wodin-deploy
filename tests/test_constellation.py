@@ -78,9 +78,7 @@ def test_obj_status():
 def test_wodin_throws_if_no_redis():
     cfg = WodinConfig("config/epimodels")
     cl = docker.client.from_env()
-    x = cl.containers.run("alpine:latest",
-                          name=f"{cfg.container_prefix}-{cfg.redis['name']}",
-                          detach=True)
+    x = cl.containers.run("alpine:latest", name=f"{cfg.container_prefix}-{cfg.redis['name']}", detach=True)
     with pytest.raises(Exception, match="Wodin could not connect to Redis"):
         configure_wodin(None, cfg)
     x.stop()
