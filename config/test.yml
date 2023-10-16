@@ -39,6 +39,7 @@ wodin-proxy:
     key: VAULT:secret/wodin/ssl/epimodels:key
 
 wodin:
+  name: wodin
   ref: main
 
 redis:
