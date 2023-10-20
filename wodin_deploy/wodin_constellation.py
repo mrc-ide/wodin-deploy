@@ -16,10 +16,7 @@ class WodinConstellation:
             cfg.container_prefix,
             containers,
             cfg.network,
-            {
-                "redis-data": "redis-data",
-                "wodin-config": "wodin-config"
-            },
+            {"redis-data": "redis-data", "wodin-config": "wodin-config"},
             data=cfg,
         )
 
@@ -56,14 +53,14 @@ def get_wodin_container(cfg, site, site_dict):
         network=cfg.network,
         entrypoint=[
             "/wodin/docker/pull-site-and-start.sh",
-            site_dict['ref'],
-            site_dict['url'],
+            site_dict["ref"],
+            site_dict["url"],
             f"/wodin/config/{site}",
             "--redis-url=redis://epimodels-redis:6379",
             "--odin-api=http://epimodels-api:8001",
             f"--base-url=http://localhost/{site_dict['urlPath']}",
-            f"/wodin/config/{site}"
-        ]
+            f"/wodin/config/{site}",
+        ],
     )
 
 
@@ -115,7 +112,5 @@ def wodin_proxy_container(cfg):
     args = ["localhost", *site_args]
     ports = [wodin_proxy["port_http"], wodin_proxy["port_https"]]
     return ConstellationContainer(
-        wodin_proxy["name"], wodin_proxy["ref"],
-        ports=ports, args=args,
-        configure=proxy_configure, network=cfg.network
+        wodin_proxy["name"], wodin_proxy["ref"], ports=ports, args=args, configure=proxy_configure, network=cfg.network
     )
