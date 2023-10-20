@@ -2,11 +2,10 @@ import io
 from contextlib import redirect_stdout
 
 import docker
-import pytest
 from constellation import docker_util
 
 from wodin_deploy.config import WodinConfig
-from wodin_deploy.wodin_constellation import WodinConstellation, configure_wodin
+from wodin_deploy.wodin_constellation import WodinConstellation
 
 
 def get_site_container_name(site, cfg):
@@ -73,13 +72,3 @@ def test_obj_status():
     - wodin-infectiousdiseasemodels-2023 (epimodels-wodin-infectiousdiseasemodels-2023): missing
     - wodin-proxy (epimodels-wodin-proxy): missing\n"""
     )
-
-
-def test_wodin_throws_if_no_redis():
-    cfg = WodinConfig("config/epimodels")
-    cl = docker.client.from_env()
-    x = cl.containers.run("alpine:latest", name=f"{cfg.container_prefix}-{cfg.redis['name']}", detach=True)
-    with pytest.raises(Exception, match="Wodin could not connect to Redis"):
-        configure_wodin(None, cfg)
-    x.stop()
-    x.remove()

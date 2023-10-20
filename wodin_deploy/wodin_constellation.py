@@ -1,7 +1,3 @@
-import subprocess
-import time
-
-import docker
 from constellation import Constellation, ConstellationContainer, ConstellationMount, docker_util
 
 
@@ -20,7 +16,10 @@ class WodinConstellation:
             cfg.container_prefix,
             containers,
             cfg.network,
-            {"redis-data": "redis-data", "wodin-config": "wodin-config"},
+            {
+                "redis-data": "redis-data",
+                "wodin-config": "wodin-config"
+            },
             data=cfg,
         )
 
@@ -34,68 +33,46 @@ class WodinConstellation:
         self.obj.status()
 
 
-def cmd(*args):
-    subprocess.call(*args)  # noqa: S603
-
-
 def redis_container(cfg):
     redis = cfg.redis
     redis_mounts = [ConstellationMount("redis-data", "/data")]
-    return ConstellationContainer(redis["name"], redis["ref"], mounts=redis_mounts)
+    return ConstellationContainer(redis["name"], redis["ref"], mounts=redis_mounts, network=cfg.network)
 
 
 def odin_api_container(cfg):
     odin_api = cfg.odin_api
-    return ConstellationContainer("api", odin_api["ref"])
+    return ConstellationContainer("api", odin_api["ref"], network=cfg.network)
 
 
-def get_preconfigure(site, container_name, container_prefix):
-    return lambda *_: cmd(
-        ["docker", "cp", "./siteConfigs/" + site, container_prefix + "-" + container_name + ":/wodin/config/" + site]
-    )
-
-
-def configure_wodin(_, cfg):
-    for _i in range(0, 10):
-        cl = docker.client.from_env()
-        redis = cl.containers.get(f"{cfg.container_prefix}-{cfg.redis['name']}")
-        if "Ready to accept connections" in redis.logs().decode("utf-8"):
-            return
-        time.sleep(1)
-    msg = "Wodin could not connect to Redis"
-    raise Exception(msg)
-
-
-def get_wodin_container(cfg, site, path):
+def get_wodin_container(cfg, site, site_dict):
     wodin = cfg.wodin
-    container_prefix = cfg.container_prefix
     wodin_mounts = [ConstellationMount("wodin-config", "/wodin/config")]
-    container_name = wodin["name"] + "-" + site
+    container_name = f"{wodin['name']}-{site}"
+
     return ConstellationContainer(
         container_name,
         wodin["ref"],
         mounts=wodin_mounts,
-        args=[
+        network=cfg.network,
+        entrypoint=[
+            "/wodin/docker/pull-site-and-start.sh",
+            site_dict['ref'],
+            site_dict['url'],
+            f"/wodin/config/{site}",
             "--redis-url=redis://epimodels-redis:6379",
             "--odin-api=http://epimodels-api:8001",
-            "--base-url=http://localhost/" + path,
-            "/wodin/config/" + site,
-        ],
-        configure=configure_wodin,
-        preconfigure=get_preconfigure(site, container_name, container_prefix),
+            f"--base-url=http://localhost/{site_dict['urlPath']}",
+            f"/wodin/config/{site}"
+        ]
     )
 
 
 def sites_containers(cfg):
     sites = cfg.sites
-    cmd(["rm", "-rf", "./siteConfigs"])
-    cmd(["mkdir", "./siteConfigs"])
     wodin_containers = []
     for site in sites.keys():
-        cmd(["mkdir", f"./siteConfigs/{site}"])
         site_dict = sites[site]
-        cmd(["git", "clone", "--branch=" + site_dict["ref"], site_dict["url"], f"./siteConfigs/{site}"])
-        wodin_containers.append(get_wodin_container(cfg, site, site_dict["urlPath"]))
+        wodin_containers.append(get_wodin_container(cfg, site, site_dict))
     return wodin_containers
 
 
@@ -114,18 +91,14 @@ def create_index_page(sites):
             )
         )
     html_strings.append("</ul>\n</body>\n</html>")
-    return html_strings
+    return "".join(html_strings)
 
 
 def proxy_configure(container, cfg):
     docker_util.exec_safely(container, "mkdir /wodin/root")
-    cmd(["mkdir", "-p", "./proxyIndexPage"])
-    sites = cfg.sites
-    html_strings = create_index_page(sites)
-    index_file = open("./proxyIndexPage/index.html", "w")
-    index_file.writelines(html_strings)
-    index_file.close()
-    cmd(["docker", "cp", "./proxyIndexPage/index.html", "epimodels-wodin-proxy:/wodin/root"])
+    html_string = create_index_page(cfg.sites)
+    docker_util.string_into_container(html_string, container, "/wodin/root/index.html")
+    docker_util.exec_safely(container, "chmod +r /wodin/root/index.html")
 
 
 def wodin_proxy_container(cfg):
@@ -142,5 +115,7 @@ def wodin_proxy_container(cfg):
     args = ["localhost", *site_args]
     ports = [wodin_proxy["port_http"], wodin_proxy["port_https"]]
     return ConstellationContainer(
-        wodin_proxy["name"], wodin_proxy["ref"], ports=ports, args=args, configure=proxy_configure, network=cfg.network
+        wodin_proxy["name"], wodin_proxy["ref"],
+        ports=ports, args=args,
+        configure=proxy_configure, network=cfg.network
     )
