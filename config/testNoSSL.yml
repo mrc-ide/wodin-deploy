@@ -1,19 +1,8 @@
-# Prefix for container names; we'll use {container_prefix}-(container_name)
 container_prefix: test-prefix
 
-# Docker org for images
 repo: test-repo
 
 network: test-network
-
-## Domain where the sites will be deployed. E.g. epimodels.dide.ic.ac.uk
-#hostname: localhost
-
-# Configuration for wodin sites
-# url: url of the github repo containing the configuration
-# ref: branch of the repo defined in the url you want to pull
-# urlPath: if set to "demoUrlPath" for example app will be on epimodels.dide.ic.ac.uk/demoUrlPath
-# description: the description that shows up on the index page at epimodels.dide.ic.ac.uk
 
 sites:
   demo:

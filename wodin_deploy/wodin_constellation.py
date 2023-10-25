@@ -43,6 +43,7 @@ def odin_api_container(cfg):
 
 def get_wodin_container(cfg, site, site_dict):
     wodin = cfg.wodin
+    prefix = cfg.container_prefix
     wodin_mounts = [ConstellationMount("wodin-config", "/wodin/config")]
     container_name = f"{wodin['name']}-{site}"
 
@@ -56,8 +57,8 @@ def get_wodin_container(cfg, site, site_dict):
             site_dict["ref"],
             site_dict["url"],
             f"/wodin/config/{site}",
-            "--redis-url=redis://epimodels-redis:6379",
-            "--odin-api=http://epimodels-api:8001",
+            f"--redis-url=redis://{prefix}-{cfg.redis['name']}:6379",
+            f"--odin-api=http://{prefix}-api:8001",
             f"--base-url=http://localhost/{site_dict['urlPath']}",
             f"/wodin/config/{site}",
         ],

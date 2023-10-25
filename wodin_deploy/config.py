@@ -32,8 +32,6 @@ class WodinConfig:
         # wodin
         self.wodin = self.get_base_config("wodin")
 
-        # self.vault = config.config_vault(dat, ["vault"])
-
     def build_ref(self, section):
         name = self.get_name(section)
         if "repo" in self.dat[section]:

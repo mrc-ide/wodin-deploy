@@ -6,9 +6,6 @@ repo: mrcide
 
 network: wodin-nw
 
-## Domain where the sites will be deployed. E.g. epimodels.dide.ic.ac.uk
-#hostname: localhost
-
 # Configuration for wodin sites
 # url: url of the github repo containing the configuration
 # ref: branch of the repo defined in the url you want to pull
