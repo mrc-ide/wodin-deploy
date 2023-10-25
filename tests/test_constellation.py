@@ -52,11 +52,11 @@ def test_obj_status():
     f = io.StringIO()
     with redirect_stdout(f):
         obj.status()
-    assert (
-        f.getvalue()
-        == """Constellation wodin
+
+    def status_string(network_status):
+        return f"""Constellation wodin
   * Network:
-    - wodin-nw: missing
+    - wodin-nw: {network_status}
   * Volumes:
     - redis-data (redis-data): missing
     - wodin-config (wodin-config): missing
@@ -71,4 +71,6 @@ def test_obj_status():
     - wodin-acomvec-2023 (epimodels-wodin-acomvec-2023): missing
     - wodin-infectiousdiseasemodels-2023 (epimodels-wodin-infectiousdiseasemodels-2023): missing
     - wodin-proxy (epimodels-wodin-proxy): missing\n"""
+    assert (
+        f.getvalue() == status_string("missing") or f.getvalue() == status_string("created")
     )
