@@ -26,13 +26,9 @@ classifiers = [
 ]
 
 dependencies = [
-#  "constellation>=1.2.4",
-  "constellation@git+https://github.com/reside-ic/constellation@master",
+  "constellation>=1.2.4",
   "docker"
 ]
-
-[tool.hatch.metadata]
-allow-direct-references = true
 
 [project.urls]
 Documentation = "https://github.com/mrc-ide/wodin-deploy#readme"
@@ -47,8 +43,7 @@ dependencies = [
   "pytest",
   "pytest-cov",
   "coverage[toml]>=6.5",
-#  "constellation>=1.2.4",
-  "constellation@git+https://github.com/reside-ic/constellation@master",
+  "constellation>=1.2.4",
   "docker"
 ]
 [tool.hatch.envs.default.scripts]

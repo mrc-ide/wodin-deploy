@@ -56,7 +56,7 @@ def test_obj_status():
         f.getvalue()
         == """Constellation wodin
   * Network:
-    - wodin-nw: created
+    - wodin-nw: missing
   * Volumes:
     - redis-data (redis-data): missing
     - wodin-config (wodin-config): missing

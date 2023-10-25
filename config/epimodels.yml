@@ -64,7 +64,7 @@ wodin-proxy:
     key: VAULT:secret/wodin/ssl/epimodels:key
 
 wodin:
-  ref: wodin-deploy-script-test
+  ref: main
 
 redis:
   repo: library
