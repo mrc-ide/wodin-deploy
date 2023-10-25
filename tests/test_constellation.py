@@ -71,6 +71,5 @@ def test_obj_status():
     - wodin-acomvec-2023 (epimodels-wodin-acomvec-2023): missing
     - wodin-infectiousdiseasemodels-2023 (epimodels-wodin-infectiousdiseasemodels-2023): missing
     - wodin-proxy (epimodels-wodin-proxy): missing\n"""
-    assert (
-        f.getvalue() == status_string("missing") or f.getvalue() == status_string("created")
-    )
+
+    assert f.getvalue() == status_string("missing") or f.getvalue() == status_string("created")
