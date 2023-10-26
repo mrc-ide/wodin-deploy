@@ -2,6 +2,7 @@ import io
 from contextlib import redirect_stdout
 
 import docker
+import pytest
 from constellation import docker_util
 
 from wodin_deploy.config import WodinConfig
@@ -15,17 +16,25 @@ def get_site_container_name(site, cfg):
 def pull_all_necessary_images(cl):
     cl.images.pull("library/redis:6.0")
     cl.images.pull("mrcide/odin.api:main")
-    cl.images.pull("mrcide/wodin-proxy:latest")
+    cl.images.pull("mrcide/wodin-proxy:main")
     cl.images.pull("mrcide/wodin:main")
 
 
-def test_start_and_stop():
+@pytest.fixture
+def start_constellation():
     cl = docker.client.from_env()
     pull_all_necessary_images(cl)
 
     cfg = WodinConfig("config/epimodels")
     obj = WodinConstellation(cfg)
     obj.start()
+    yield cl, cfg, obj
+
+    obj.stop(kill=True, remove_volumes=True)
+
+
+def test_start_and_stop(start_constellation):
+    cl, cfg, obj = start_constellation
 
     assert docker_util.network_exists(cfg.network)
     assert docker_util.volume_exists("redis-data")
@@ -39,8 +48,6 @@ def test_start_and_stop():
 
     containers = cl.containers.list()
     assert len(containers) == 3 + len(cfg.sites)
-
-    obj.stop(kill=True, remove_volumes=True)
 
 
 def test_obj_status():

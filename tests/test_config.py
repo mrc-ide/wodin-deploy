@@ -27,7 +27,7 @@ def test_config_basic():
     assert cfg.wodin["name"] == "wodin"
     assert str(cfg.wodin["ref"]) == "test-repo/wodin:main"
     assert cfg.wodin_proxy["name"] == "wodin-proxy"
-    assert str(cfg.wodin_proxy["ref"]) == "test-repo/wodin-proxy:latest"
+    assert str(cfg.wodin_proxy["ref"]) == "test-repo/wodin-proxy:main"
     assert cfg.wodin_proxy["port_http"] == 80
     assert cfg.wodin_proxy["port_https"] == 443
     assert cfg.wodin_proxy["ssl_certificate"] == "test-cert"
@@ -60,7 +60,7 @@ def test_config_basic_no_ssl():
     assert cfg.wodin["name"] == "wodin"
     assert str(cfg.wodin["ref"]) == "test-repo/wodin:main"
     assert cfg.wodin_proxy["name"] == "wodin-proxy"
-    assert str(cfg.wodin_proxy["ref"]) == "test-repo/wodin-proxy:latest"
+    assert str(cfg.wodin_proxy["ref"]) == "test-repo/wodin-proxy:main"
     assert cfg.wodin_proxy["port_http"] == 80
     assert cfg.wodin_proxy["port_https"] == 443
     assert "ssl_certificate" not in cfg.wodin_proxy

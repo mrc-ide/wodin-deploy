@@ -20,7 +20,7 @@ odin.api:
   ref: main
 
 wodin-proxy:
-  ref: latest
+  ref: main
   port_http: 80
   port_https: 443
   ssl:
