@@ -93,7 +93,7 @@ def create_index_page(sites):
 
 
 def proxy_configure(container, cfg):
-    docker_util.exec_safely(container, "mkdir /wodin/root")
+    docker_util.exec_safely(container, "mkdir -p /wodin/root")
     html_string = create_index_page(cfg.sites)
     docker_util.string_into_container(html_string, container, "/wodin/root/index.html")
     docker_util.exec_safely(container, "chmod +r /wodin/root/index.html")
