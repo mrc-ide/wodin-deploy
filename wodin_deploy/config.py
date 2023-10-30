@@ -33,7 +33,7 @@ class WodinConfig:
         self.wodin = self.get_base_config("wodin")
 
     def build_ref(self, section):
-        name = self.get_name(section)
+        name = self.get_image_name(section)
         if "repo" in self.dat[section]:
             repo = config.config_string(self.dat, [section, "repo"])
         else:
@@ -41,11 +41,23 @@ class WodinConfig:
         ref = config.config_string(self.dat, [section, "ref"])
         return constellation.ImageReference(repo, name, ref)
 
-    def get_name(self, section):
-        if "name" in self.dat[section]:
-            return config.config_string(self.dat, [section, "name"])
+    def get_image_name(self, section):
+        if "image_name" in self.dat[section]:
+            return config.config_string(self.dat, [section, "image_name"])
+        else:
+            return section
+
+    def get_container_name(self, section):
+        if "container_name" in self.dat[section]:
+            return config.config_string(self.dat, [section, "container_name"])
         else:
             return section
 
     def get_base_config(self, section):
-        return {"ref": self.build_ref(section), "name": self.get_name(section)}
+        container_name = self.get_container_name(section)
+        return {
+            "ref": self.build_ref(section),
+            "image_name": self.get_image_name(section),
+            "container_name": container_name,
+            "full_container_name": f"{self.container_prefix}-{container_name}",
+        }

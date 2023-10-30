@@ -17,7 +17,9 @@ sites:
     description: test desc for shortcourse
 
 odin.api:
+  container_name: api
   ref: main
+  image_name: odin-image
 
 wodin-proxy:
   ref: main

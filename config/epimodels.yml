@@ -51,6 +51,7 @@ sites:
 
 odin.api:
   ref: main
+  container_name: api
 
 wodin-proxy:
   ref: main

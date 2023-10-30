@@ -10,7 +10,7 @@ from wodin_deploy.wodin_constellation import WodinConstellation
 
 
 def get_site_container_name(site, cfg):
-    return f"{cfg.container_prefix}-{cfg.wodin['name']}-{site}"
+    return f"{cfg.wodin['full_container_name']}-{site}"
 
 
 def pull_all_necessary_images(cl):

@@ -33,19 +33,18 @@ class WodinConstellation:
 def redis_container(cfg):
     redis = cfg.redis
     redis_mounts = [ConstellationMount("redis-data", "/data")]
-    return ConstellationContainer(redis["name"], redis["ref"], mounts=redis_mounts, network=cfg.network)
+    return ConstellationContainer(redis["container_name"], redis["ref"], mounts=redis_mounts, network=cfg.network)
 
 
 def odin_api_container(cfg):
     odin_api = cfg.odin_api
-    return ConstellationContainer("api", odin_api["ref"], network=cfg.network)
+    return ConstellationContainer(odin_api["container_name"], odin_api["ref"], network=cfg.network)
 
 
 def get_wodin_container(cfg, site, site_dict):
     wodin = cfg.wodin
-    prefix = cfg.container_prefix
     wodin_mounts = [ConstellationMount("wodin-config", "/wodin/config")]
-    container_name = f"{wodin['name']}-{site}"
+    container_name = f"{wodin['container_name']}-{site}"
 
     return ConstellationContainer(
         container_name,
@@ -57,8 +56,8 @@ def get_wodin_container(cfg, site, site_dict):
             site_dict["ref"],
             site_dict["url"],
             f"/wodin/config/{site}",
-            f"--redis-url=redis://{prefix}-{cfg.redis['name']}:6379",
-            f"--odin-api=http://{prefix}-api:8001",
+            f"--redis-url=redis://{cfg.redis['full_container_name']}:6379",
+            f"--odin-api=http://{cfg.odin_api['full_container_name']}:8001",
             f"--base-url=http://localhost/{site_dict['urlPath']}",
             f"/wodin/config/{site}",
         ],
@@ -93,25 +92,30 @@ def create_index_page(sites):
 
 
 def proxy_configure(container, cfg):
-    docker_util.exec_safely(container, "mkdir -p /wodin/root")
+    root_dir_path = "/wodin/root"
+    docker_util.exec_safely(container, f"mkdir -p {root_dir_path}")
     html_string = create_index_page(cfg.sites)
-    docker_util.string_into_container(html_string, container, "/wodin/root/index.html")
-    docker_util.exec_safely(container, "chmod +r /wodin/root/index.html")
+    docker_util.string_into_container(html_string, container, f"{root_dir_path}/index.html")
+    docker_util.exec_safely(container, ["chmod", "+r", f"{root_dir_path}/index.html"])
 
 
 def wodin_proxy_container(cfg):
     wodin_proxy = cfg.wodin_proxy
     sites = cfg.sites
-    container_prefix = cfg.container_prefix
     wodin = cfg.wodin
     site_args = []
     for site in sites.keys():
         site_args.append("--site")
         url_path = sites[site]["urlPath"]
-        container_name = "{}-{}-{}".format(container_prefix, wodin["name"], site)
+        container_name = "{}-{}".format(wodin["full_container_name"], site)
         site_args.append(f"{url_path}={container_name}:3000")
     args = ["localhost", *site_args]
     ports = [wodin_proxy["port_http"], wodin_proxy["port_https"]]
     return ConstellationContainer(
-        wodin_proxy["name"], wodin_proxy["ref"], ports=ports, args=args, configure=proxy_configure, network=cfg.network
+        wodin_proxy["container_name"],
+        wodin_proxy["ref"],
+        ports=ports,
+        args=args,
+        configure=proxy_configure,
+        network=cfg.network,
     )
