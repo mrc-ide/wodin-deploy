@@ -1,0 +1,38 @@
+container_prefix: test-prefix
+
+repo: test-repo
+
+network: test-network
+
+sites:
+  demo:
+    url: https://github.com/mrc-ide/wodin-demo-config
+    ref: main
+    urlPath: demo
+    description: test desc for demo
+  shortcourse:
+    url: https://github.com/mrc-ide/wodin-shortcourse-2023
+    ref: main
+    urlPath: shortcourse
+    description: test desc for shortcourse
+
+odin.api:
+  container_name: api
+  ref: main
+  image_name: odin-image
+
+wodin-proxy:
+  ref: main
+  port_http: 80
+  port_https: 443
+  ssl:
+    certificate: test-cert
+    key: test-key
+
+wodin:
+  name: wodin
+  ref: main
+
+redis:
+  repo: library
+  ref: "6.0"
