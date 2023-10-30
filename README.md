@@ -5,6 +5,36 @@
 
 -----
 
+## Installing packages
+Hatch will automatically install and sync dependencies whenever you run any
+```commandline
+hatch run ...
+```
+command
+
+## Testing
+### To run all
+```commandline
+hatch run test
+```
+
+### To run within directory
+```commandline
+hatch run test ./directory/
+```
+
+### To run within file
+```commandline
+hatch run test ./path/to/file/test_file.py
+```
+
+### To run specific tests
+```commandline
+hatch run tests ./test_file_1.py::test_name_1 ./test_file_2.py::test_name_2
+```
+
+-----
+
 ## Moving parts
 
 **NOTE: this documentation describes the state that the deployment tool will reach once fully implemented, not what currently is implemented**
